@@ -15,21 +15,13 @@ const PaymentModal = ({
 
   if (!isOpen) return null;
 
-  const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
-    }
-  };
+  //   const handleFileChange = (e) => {
+  //     if (e.target.files && e.target.files[0]) {
+  //       setFile(e.target.files[0]);
+  //     }
+  //   };
 
   const handleSubmit = () => {
-    const paymentData = {
-      paymentMethod: paymentMethod.name,
-      amount: selectedAmount,
-      plan: selectedPlanData,
-      fileName: file ? file.name : null,
-      notes: notes,
-      timestamp: new Date().toISOString(),
-    };
     if (file === null) {
       Swal.fire({
         icon: "error",
@@ -39,9 +31,19 @@ const PaymentModal = ({
       return;
     }
 
+    const paymentData = {
+      paymentMethod: paymentMethod.name,
+      amount: selectedAmount,
+      plan: selectedPlanData,
+      fileName: file ? file.name : null,
+      notes: notes,
+      timestamp: new Date().toISOString(),
+    };
+
     console.log("Payment submitted:", paymentData);
+
     Swal.fire({
-      title: "payment slip received and selected method",
+      title: "Payment slip received and selected method",
       showClass: {
         popup: `
           animate__animated
@@ -57,6 +59,7 @@ const PaymentModal = ({
         `,
       },
     });
+
     onSubmitPayment(paymentData);
 
     setFile(null);
@@ -68,7 +71,7 @@ const PaymentModal = ({
     if (!selectedPlanData) return null;
 
     if (selectedPlanData.id === "yearly-installment") {
-      return { total: 10, amount: 10 };
+      return { total: 12, amount: 10 };
     }
     if (selectedPlanData.id === "life-installment") {
       return { total: 5, amount: 100 };
@@ -157,7 +160,7 @@ const PaymentModal = ({
                   Installments: {installmentDetails.total}
                 </p>
                 <p className="text-gray-700">
-                  Per Installment: {installmentDetails.amount.toFixed(2)} $
+                  Per Installment: ${installmentDetails.amount.toFixed(2)}
                 </p>
 
                 <div className="bg-blue-50 p-3 rounded mt-3">
@@ -175,19 +178,19 @@ const PaymentModal = ({
               <div className="flex justify-between">
                 <p className="text-gray-700">Membership Fee</p>
                 <p className="text-black font-semibold">
+                  $
                   {installmentDetails
                     ? installmentDetails.amount.toFixed(2)
-                    : selectedPlanData?.price.toFixed(2)}{" "}
-                  $
+                    : selectedPlanData?.price.toFixed(2)}
                 </p>
               </div>
               <div className="flex justify-between text-lg font-bold border-t pt-2">
                 <p className="text-black">Total Payable Amount</p>
                 <p className="text-black">
+                  $
                   {installmentDetails
                     ? installmentDetails.amount.toFixed(2)
-                    : selectedAmount}{" "}
-                  $
+                    : selectedAmount}
                 </p>
               </div>
             </div>
@@ -212,29 +215,6 @@ const PaymentModal = ({
           </div>
 
           {/* file upload */}
-          <div>
-            <label className="block text-black font-bold mb-2">
-              Upload Payment Receipt *{" "}
-              <span className="font-normal text-gray-600">
-                (JPG, PNG, PDF. Max 10 MB file)
-              </span>
-            </label>
-            <div className="flex items-center gap-4">
-              <label className="bg-gray-100 text-gray-700 px-4 py-2 rounded cursor-pointer hover:bg-gray-200 transition">
-                Choose File
-                <input
-                  type="file"
-                  accept=".jpg,.jpeg,.png,.pdf"
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-              </label>
-              <span className="text-gray-600">
-                {file ? file.name : "No File Chosen"}
-              </span>
-            </div>
-          </div>
-
           <div>
             <label className="block text-black font-bold mb-2">
               Additional Notes{" "}

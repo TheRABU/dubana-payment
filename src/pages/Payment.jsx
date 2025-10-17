@@ -39,25 +39,43 @@ const Payment = () => {
   }, []);
 
   const paymentMethods = [
-    { id: "zelle", name: "Zelle (Scan to Pay)", img: paymentImages.zelle },
+    {
+      id: "zelle",
+      name: "Zelle (Scan to Pay)",
+      img: paymentImages.zelle,
+      needsModal: true,
+    },
     {
       id: "square",
       name: "Square | Credit/Debit Card Checkout",
       img: paymentImages.square,
+      needsModal: false,
     },
     {
       id: "stripe",
       name: "Stripe | Credit/Debit Card Checkout",
       img: paymentImages.stripe,
+      needsModal: false,
     },
-    { id: "venmo", name: "Venmo (Scan to Pay)", img: paymentImages.venmo },
+    {
+      id: "venmo",
+      name: "Venmo (Scan to Pay)",
+      img: paymentImages.venmo,
+      needsModal: true,
+    },
     {
       id: "paypal",
       name: "Paypal | Credit/Debit Card Checkout",
       img: paymentImages.paypal,
+      needsModal: false,
     },
-    { id: "cash", name: "Cash", img: paymentImages.cash },
-    { id: "bank", name: "Wire Transfer", img: paymentImages.bank },
+    { id: "cash", name: "Cash", img: paymentImages.cash, needsModal: false },
+    {
+      id: "bank",
+      name: "Wire Transfer",
+      img: paymentImages.bank,
+      needsModal: false,
+    },
   ];
 
   const plans = [
@@ -85,11 +103,17 @@ const Payment = () => {
         title: "Please select a membership plan first",
         text: "Something went wrong!",
       });
-
       return;
     }
-    setSelectedPaymentMethod(method);
-    setIsModalOpen(true);
+
+    // If it's Zelle or Venmo, open modal
+    if (method.needsModal) {
+      setSelectedPaymentMethod(method);
+      setIsModalOpen(true);
+    } else {
+      // For other payment methods, just set the selected method
+      setSelectedPaymentMethod(method);
+    }
   };
 
   const handlePaymentSubmit = (paymentData) => {
@@ -121,16 +145,84 @@ const Payment = () => {
     });
   };
 
+  const handlePayNow = () => {
+    if (!selectedPlan) {
+      Swal.fire({
+        icon: "error",
+        title: "Please select a membership plan first",
+        text: "Something went wrong!",
+      });
+      return;
+    }
+
+    if (!selectedPaymentMethod) {
+      Swal.fire({
+        icon: "error",
+        title: "Please select a payment method first",
+        text: "Something went wrong!",
+      });
+      return;
+    }
+
+    // If it's a scan-to-pay method, user should have already uploaded via modal
+    if (selectedPaymentMethod.needsModal) {
+      Swal.fire({
+        icon: "error",
+        title: "Please complete the payment upload process",
+        text: "Use the payment method button to upload your receipt",
+      });
+      return;
+    }
+
+    // For card/other payments, directly save to localStorage
+    const paymentData = {
+      paymentMethod: selectedPaymentMethod.name,
+      amount: calculateTotal(),
+      plan: getSelectedPlanData(),
+      fileName: null, // No file upload for card payments
+      notes: `Direct payment via ${selectedPaymentMethod.name}`,
+      timestamp: new Date().toISOString(),
+    };
+
+    handlePaymentSubmit(paymentData);
+  };
+
   const calculateTotal = () => {
     if (!selectedPlan) return 0;
     const plan = plans.find((p) => p.id === selectedPlan);
 
+    // For installment plans
     if (plan.id === "yearly-installment" || plan.id === "life-installment") {
+      // Add processing fee for card payments only
+      if (selectedPaymentMethod && !selectedPaymentMethod.needsModal) {
+        return (plan.price + 2).toFixed(2);
+      }
       return plan.price.toFixed(2);
     }
 
-    const processingFee = plan.price * 0.1;
+    // For upfront payments
+    const processingFee =
+      selectedPaymentMethod && !selectedPaymentMethod.needsModal
+        ? 2
+        : plan.price * 0.1;
     return (plan.price + processingFee).toFixed(2);
+  };
+
+  const getProcessingFee = () => {
+    if (!selectedPlan) return "0.00";
+    const plan = plans.find((p) => p.id === selectedPlan);
+
+    // For card/online payments, fixed $2 processing fee
+    if (selectedPaymentMethod && !selectedPaymentMethod.needsModal) {
+      return "2.00";
+    }
+
+    // For scan-to-pay methods
+    if (plan.id === "yearly-installment" || plan.id === "life-installment") {
+      return "0.00";
+    }
+
+    return (plan.price * 0.1).toFixed(2);
   };
 
   const getSelectedPlanData = () => {
@@ -290,7 +382,11 @@ const Payment = () => {
                 <button
                   key={method.id}
                   onClick={() => handlePaymentClick(method)}
-                  className="w-full flex justify-between items-center rounded-2xl border-2 border-slate-100 p-3 hover:bg-slate-50 transition"
+                  className={`w-full flex justify-between items-center rounded-2xl border-2 p-3 transition ${
+                    selectedPaymentMethod?.id === method.id
+                      ? "border-blue-500 bg-blue-50"
+                      : "border-slate-100 hover:bg-slate-50"
+                  }`}
                 >
                   <p className="text-lg text-black">{method.name}</p>
                   <img
@@ -323,7 +419,7 @@ const Payment = () => {
               {installmentInfo
                 ? `${
                     installmentInfo.total
-                  } × ${installmentInfo.perInstallment.toFixed(2)}`
+                  } × $${installmentInfo.perInstallment.toFixed(2)}`
                 : "0/0"}
             </p>
           </div>
@@ -338,7 +434,7 @@ const Payment = () => {
                 Installments: {installmentInfo.total}
               </p>
               <p className="text-gray-700">
-                Per Installment: {installmentInfo.perInstallment.toFixed(2)} $
+                Per Installment: ${installmentInfo.perInstallment.toFixed(2)}
               </p>
 
               <div className="bg-blue-50 p-3 rounded mt-3">
@@ -365,16 +461,7 @@ const Payment = () => {
 
             <div className="flex justify-between mt-2">
               <p>Processing Fee</p>
-              <p>
-                $
-                {installmentInfo
-                  ? "0.00"
-                  : selectedPlan
-                  ? (
-                      plans.find((p) => p.id === selectedPlan)?.price * 0.1
-                    ).toFixed(2)
-                  : "0.00"}
-              </p>
+              <p>${getProcessingFee()}</p>
             </div>
 
             <hr className="mt-4" />
@@ -385,6 +472,7 @@ const Payment = () => {
             </div>
 
             <button
+              onClick={handlePayNow}
               disabled={paymentHistory.length > 0}
               className={`w-full py-2 mt-3 rounded-xl text-xl text-white transition 
     ${
@@ -449,7 +537,7 @@ const Payment = () => {
                       </td>
                       <td className="py-2 px-4 border-b">{payment.amount}</td>
                       <td className="py-2 px-4 border-b truncate max-w-xs">
-                        {payment.notes || "—"}
+                        {payment.notes || "–"}
                       </td>
                       <td className="py-2 px-4 border-b">
                         {new Date(payment.timestamp).toLocaleString()}
@@ -457,16 +545,21 @@ const Payment = () => {
                     </tr>
                   ))}
                 </tbody>
-                <button
-                  onClick={() => {
-                    localStorage.removeItem("paymentData");
-                    setPaymentHistory([]);
-                  }}
-                  className="mt-4 bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700 transition"
-                >
-                  Clear Payment History
-                </button>
               </table>
+              <button
+                onClick={() => {
+                  localStorage.removeItem("paymentData");
+                  setPaymentHistory([]);
+                  setSelectedPaymentMethod(null);
+                  Swal.fire({
+                    icon: "success",
+                    title: "Payment history cleared successfully",
+                  });
+                }}
+                className="mt-4 bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700 transition"
+              >
+                Clear Payment History
+              </button>
             </div>
           </section>
         )}
