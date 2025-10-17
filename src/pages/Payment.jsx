@@ -384,8 +384,16 @@ const Payment = () => {
               <p className="font-semibold">${calculateTotal()}</p>
             </div>
 
-            <button className="w-full py-2 mt-3 rounded-xl bg-[#012077] text-xl text-white hover:bg-blue-900 transition">
-              Pay now
+            <button
+              disabled={paymentHistory.length > 0}
+              className={`w-full py-2 mt-3 rounded-xl text-xl text-white transition 
+    ${
+      paymentHistory.length > 0
+        ? "bg-green-600 cursor-not-allowed"
+        : "bg-[#012077] hover:bg-blue-900"
+    }`}
+            >
+              {paymentHistory.length > 0 ? "Payment Completed" : "Pay now"}
             </button>
           </div>
         </section>
