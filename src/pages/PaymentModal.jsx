@@ -15,11 +15,11 @@ const PaymentModal = ({
 
   if (!isOpen) return null;
 
-  //   const handleFileChange = (e) => {
-  //     if (e.target.files && e.target.files[0]) {
-  //       setFile(e.target.files[0]);
-  //     }
-  //   };
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
+  };
 
   const handleSubmit = () => {
     if (file === null) {
@@ -105,7 +105,7 @@ const PaymentModal = ({
               </span>
             </p>
 
-            {/* QR */}
+            {/* QR Code Section */}
             {(paymentMethod.id === "zelle" || paymentMethod.id === "venmo") && (
               <div className="flex justify-center my-6">
                 <div className="border-2 border-gray-200 rounded-lg p-8">
@@ -125,7 +125,7 @@ const PaymentModal = ({
             )}
           </div>
 
-          {/* payment details */}
+          {/* Payment Details */}
           <div className="bg-gray-50 p-4 rounded-lg">
             <h3 className="text-xl font-bold text-black mb-4">
               Payment Details
@@ -150,7 +150,7 @@ const PaymentModal = ({
               )}
             </div>
 
-            {/* installment breakdown */}
+            {/* Installment Breakdown */}
             {installmentDetails && (
               <div className="mb-4">
                 <p className="text-black font-semibold mb-2">
@@ -196,7 +196,7 @@ const PaymentModal = ({
             </div>
           </div>
 
-          {/* instructions */}
+          {/* Instructions */}
           <div className="bg-pink-50 border border-pink-200 rounded-lg p-6">
             <h3 className="text-xl font-bold text-red-700 mb-4">
               How to complete payment:
@@ -214,7 +214,31 @@ const PaymentModal = ({
             </ol>
           </div>
 
-          {/* file upload */}
+          {/* File Upload Section */}
+          <div>
+            <label className="block text-black font-bold mb-2">
+              Upload Payment Receipt *{" "}
+              <span className="font-normal text-gray-600">
+                (JPG, PNG, PDF. Max 10 MB file)
+              </span>
+            </label>
+            <div className="flex items-center gap-4">
+              <label className="bg-gray-100 text-gray-700 px-4 py-2 rounded cursor-pointer hover:bg-gray-200 transition">
+                Choose File
+                <input
+                  type="file"
+                  accept=".jpg,.jpeg,.png,.pdf"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+              </label>
+              <span className="text-gray-600">
+                {file ? file.name : "No File Chosen"}
+              </span>
+            </div>
+          </div>
+
+          {/* Additional Notes */}
           <div>
             <label className="block text-black font-bold mb-2">
               Additional Notes{" "}
@@ -228,6 +252,7 @@ const PaymentModal = ({
             />
           </div>
 
+          {/* Submit Button */}
           <button
             onClick={handleSubmit}
             className="w-full bg-[#012077] text-white py-3 rounded-lg text-lg font-semibold hover:bg-blue-900 transition"

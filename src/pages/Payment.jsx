@@ -174,12 +174,11 @@ const Payment = () => {
       return;
     }
 
-    // For card/other payments, directly save to localStorage
     const paymentData = {
       paymentMethod: selectedPaymentMethod.name,
       amount: calculateTotal(),
       plan: getSelectedPlanData(),
-      fileName: null, // No file upload for card payments
+      fileName: null,
       notes: `Direct payment via ${selectedPaymentMethod.name}`,
       timestamp: new Date().toISOString(),
     };
@@ -191,9 +190,7 @@ const Payment = () => {
     if (!selectedPlan) return 0;
     const plan = plans.find((p) => p.id === selectedPlan);
 
-    // For installment plans
     if (plan.id === "yearly-installment" || plan.id === "life-installment") {
-      // Add processing fee for card payments only
       if (selectedPaymentMethod && !selectedPaymentMethod.needsModal) {
         return (plan.price + 2).toFixed(2);
       }
@@ -212,7 +209,6 @@ const Payment = () => {
     if (!selectedPlan) return "0.00";
     const plan = plans.find((p) => p.id === selectedPlan);
 
-    // For card/online payments, fixed $2 processing fee
     if (selectedPaymentMethod && !selectedPaymentMethod.needsModal) {
       return "2.00";
     }
