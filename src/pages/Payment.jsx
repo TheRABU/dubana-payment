@@ -1,18 +1,21 @@
+import zelleLogo from "../assets/zelle.PNG";
+
 const Payment = () => {
   return (
     <>
-      <div className="w-full h-screen ">
-        <section className="h-20 max-w-7xl mx-auto rounded-xl mt-10 bg-[#ffffff]">
+      <div className="w-full my-10 max-w-7xl mx-auto">
+        <section className="h-20 rounded-xl mt-10 bg-[#ffffff]">
           <div className="">
             <h2 className="font-black text-2xl text-left pt-5 pl-4">
               Complete your payment
             </h2>
           </div>
         </section>
-        <main className="flex justify-center items-start max-w-7xl mx-auto mt-10 rounded-md">
-          <div className="membership w-[60%] bg-[#ffffff] rounded-xl p-4">
+        {/* selection */}
+        <main className="flex justify-center items-start mt-10 rounded-md gap-5 mb-10">
+          <div className="membership w-[60%] bg-[#ffffff] rounded-xl space-y-8 p-4">
             <header>
-              <h3 className="text-black font-semibold text-lg">
+              <h3 className="text-black font-semibold text-xl mb-3">
                 1. Select your Membership
               </h3>
               <hr />
@@ -143,8 +146,99 @@ const Payment = () => {
               </div>
             </div> */}
           </div>
-          <div className="payment-method w-[40%]"></div>
+          {/* payment methods */}
+          <div className="payment-method w-[40%] bg-[#ffffff] rounded-xl p-6">
+            <div className="mb-3">
+              <h2 className="text-xl font-semibold text-black">
+                2. Payment Method
+              </h2>
+            </div>
+            <div className="payment-buttons space-y-4 flex-col">
+              <button className="w-full flex justify-center items-center rounded-2xl border-2 cursor-pointer border-slate-100 p-3">
+                <div className="flex justify-between w-full items-center">
+                  <p className="text-lg text-black">Zelle (Scan to Pay) </p>
+                  <img className="h-10 w-20" src={zelleLogo} alt="" />
+                </div>
+              </button>
+              <button className="w-full flex justify-center items-center rounded-2xl border-2 cursor-pointer border-slate-100 p-3">
+                <div className="flex justify-between w-full items-center">
+                  <p className="text-lg text-black">
+                    Square | Credit/Debit Card Checkout{" "}
+                  </p>
+                  <img className="h-10 w-20" src={zelleLogo} alt="" />
+                </div>
+              </button>
+              <button className="w-full flex justify-center items-center rounded-2xl border-2 cursor-pointer border-slate-100 p-3">
+                <div className="flex justify-between w-full items-center">
+                  <p className="text-lg text-black">
+                    Stripe | Credit/Debit Card Checkout{" "}
+                  </p>
+                  <img className="h-10 w-20" src={zelleLogo} alt="" />
+                </div>
+              </button>
+              <button className="w-full flex justify-center items-center rounded-2xl border-2 cursor-pointer border-slate-100 p-3">
+                <div className="flex justify-between w-full items-center">
+                  <p className="text-lg text-black">Venmo (Scan to Pay) </p>
+                  <img className="h-10 w-20" src={zelleLogo} alt="" />
+                </div>
+              </button>
+              <button className="w-full flex justify-center items-center rounded-2xl border-2 cursor-pointer border-slate-100 p-3">
+                <div className="flex justify-between w-full items-center">
+                  <p className="text-lg text-black">
+                    Paypal | Credit/Debit Card Checkout{" "}
+                  </p>
+                  <img className="h-10 w-20" src={zelleLogo} alt="" />
+                </div>
+              </button>
+              <button className="w-full flex justify-center items-center rounded-2xl border-2 cursor-pointer border-slate-100 p-3">
+                <div className="flex justify-between w-full items-center">
+                  <p className="text-lg text-black">Cash</p>
+                  <img className="h-10 w-20" src={zelleLogo} alt="" />
+                </div>
+              </button>
+              <button className="w-full flex justify-center items-center rounded-2xl border-2 cursor-pointer border-slate-100 p-3">
+                <div className="flex justify-between w-full items-center">
+                  <p className="text-lg text-black">Wire Transfer</p>
+                  <img className="h-10 w-20" src={zelleLogo} alt="" />
+                </div>
+              </button>
+            </div>
+          </div>
         </main>
+        {/* payment summary */}
+        <section className="rounded-xl mt-5 w-full p-6 bg-[#ffffff]">
+          <header>
+            <h2 className="text-2xl text-black">3. Payment Summary</h2>
+
+            <div className="flex justify-between items-start mt-2">
+              <p>Selected plan</p>
+              <p>upfront</p>
+            </div>
+            <div className="flex justify-between items-start mt-2">
+              <p>Installments</p>
+              <p>0/0</p>
+            </div>
+          </header>
+          <div className="mt-3">
+            <div className="flex justify-between items-start">
+              <h1>Membership Fee</h1>
+              <p> 500.00 $</p>
+            </div>
+            <div className="flex justify-between items-start mt-2">
+              <p>Processing Fee</p>
+              <p> 50.00 $</p>
+            </div>
+            <hr className="mt-4" />
+
+            <div className="flex justify-between items-start mt-3">
+              <p>Total Payable Amount</p>
+              <p>00.00 $</p>
+            </div>
+            <button className="flex justify-center items-center w-full py-2 cursor-pointer mt-3 rounded-xl bg-[#012077] text-xl text-white">
+              Pay now
+            </button>
+          </div>
+        </section>
       </div>
     </>
   );

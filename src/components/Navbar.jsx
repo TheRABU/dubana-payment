@@ -20,7 +20,7 @@ const Navbar = () => {
             <li className="cursor-pointer">Gallery</li>
             <li className="cursor-pointer">About Us</li>
           </ul>
-          <button className="rounded-lg px-3 py-2 bg-[#012077] text-white text-md">
+          <button className="rounded-lg px-5 py-2 bg-[#012077] text-white text-md flex justify-center items-center">
             Login
           </button>
         </div>
