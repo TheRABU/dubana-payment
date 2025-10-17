@@ -1,4 +1,10 @@
 import zelleLogo from "../assets/zelle.PNG";
+import venmo from "../assets/venmo.PNG";
+import square from "../assets/square.PNG";
+import stripe from "../assets/stripe.PNG";
+import paypal from "../assets/paypal.PNG";
+import cash from "../assets/cash.PNG";
+import bank from "../assets/bank.PNG";
 
 const Payment = () => {
   return (
@@ -6,7 +12,7 @@ const Payment = () => {
       <div className="w-full my-10 max-w-7xl mx-auto">
         <section className="h-20 rounded-xl mt-10 bg-[#ffffff]">
           <div className="">
-            <h2 className="font-black text-2xl text-left pt-5 pl-4">
+            <h2 className="text-black font-semibold text-2xl text-left pt-5 pl-4">
               Complete your payment
             </h2>
           </div>
@@ -165,7 +171,7 @@ const Payment = () => {
                   <p className="text-lg text-black">
                     Square | Credit/Debit Card Checkout{" "}
                   </p>
-                  <img className="h-10 w-20" src={zelleLogo} alt="" />
+                  <img className="h-10 w-20" src={square} alt="" />
                 </div>
               </button>
               <button className="w-full flex justify-center items-center rounded-2xl border-2 cursor-pointer border-slate-100 p-3">
@@ -173,13 +179,13 @@ const Payment = () => {
                   <p className="text-lg text-black">
                     Stripe | Credit/Debit Card Checkout{" "}
                   </p>
-                  <img className="h-10 w-20" src={zelleLogo} alt="" />
+                  <img className="h-10 w-20" src={stripe} alt="" />
                 </div>
               </button>
               <button className="w-full flex justify-center items-center rounded-2xl border-2 cursor-pointer border-slate-100 p-3">
                 <div className="flex justify-between w-full items-center">
                   <p className="text-lg text-black">Venmo (Scan to Pay) </p>
-                  <img className="h-10 w-20" src={zelleLogo} alt="" />
+                  <img className="h-10 w-20" src={venmo} alt="" />
                 </div>
               </button>
               <button className="w-full flex justify-center items-center rounded-2xl border-2 cursor-pointer border-slate-100 p-3">
@@ -187,19 +193,19 @@ const Payment = () => {
                   <p className="text-lg text-black">
                     Paypal | Credit/Debit Card Checkout{" "}
                   </p>
-                  <img className="h-10 w-20" src={zelleLogo} alt="" />
+                  <img className="h-10 w-20" src={paypal} alt="" />
                 </div>
               </button>
               <button className="w-full flex justify-center items-center rounded-2xl border-2 cursor-pointer border-slate-100 p-3">
                 <div className="flex justify-between w-full items-center">
                   <p className="text-lg text-black">Cash</p>
-                  <img className="h-10 w-20" src={zelleLogo} alt="" />
+                  <img className="h-10 w-20" src={cash} alt="" />
                 </div>
               </button>
               <button className="w-full flex justify-center items-center rounded-2xl border-2 cursor-pointer border-slate-100 p-3">
                 <div className="flex justify-between w-full items-center">
                   <p className="text-lg text-black">Wire Transfer</p>
-                  <img className="h-10 w-20" src={zelleLogo} alt="" />
+                  <img className="h-10 w-20" src={bank} alt="" />
                 </div>
               </button>
             </div>
