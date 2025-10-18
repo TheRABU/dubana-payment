@@ -8,7 +8,7 @@ const Navbar = () => {
           <img className="h-14" src={logo} alt="Dubana Logo" />
         </div>
         <div className="flex justify-center items-center gap-2 flex-1">
-          <ul className="flex justify-center items-center gap-4">
+          <ul className="hidden lg:flex justify-center items-center gap-4">
             <li className="cursor-pointer">Home</li>
             <li className="cursor-pointer">Reunion</li>
             <li className="cursor-pointer">Members</li>
