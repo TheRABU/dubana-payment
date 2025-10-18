@@ -84,7 +84,7 @@ const Payment = () => {
     {
       id: "yearly-installment",
       name: "Yearly Member",
-      price: 10,
+      price: 120,
       type: "12 Installments",
     },
     { id: "life", name: "Life Member", price: 500, type: "Upfront" },
@@ -164,7 +164,6 @@ const Payment = () => {
       return;
     }
 
-    // If it's a scan-to-pay method, user should have already uploaded via modal
     if (selectedPaymentMethod.needsModal) {
       Swal.fire({
         icon: "error",
@@ -321,7 +320,7 @@ const Payment = () => {
                       12 Installments
                     </div>
                   </div>
-                  <p className="text-black text-lg">$10.00</p>
+                  <p className="text-black text-lg">$120.00</p>
                 </label>
               </div>
             </section>
@@ -552,7 +551,7 @@ const Payment = () => {
                     title: "Payment history cleared successfully",
                   });
                 }}
-                className="mt-4 bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700 transition"
+                className="mt-4 bg-red-600 text-white text-sm px-3 py-2 rounded-2xl hover:bg-red-700 transition"
               >
                 Clear Payment History
               </button>
